@@ -8,8 +8,9 @@ class data_strava:
         strava_df_filtered = df[['Activity Date', 'Activity Type', 'Elapsed Time', 'Distance']]
         #print(strava_df_filtered)
         filtered_ride = strava_df_filtered[strava_df_filtered['Activity Type'].str.contains('Ride')]
-        total_distance = filtered_ride['Distance'].sum()
-        total_time = (filtered_ride['Elapsed Time'].sum())/3600
+        filtered_ride_to_job = filtered_ride[filtered_ride['Distance'] < 20]
+        total_distance = filtered_ride_to_job['Distance'].sum()
+        total_time = (filtered_ride_to_job['Elapsed Time'].sum()) / 3600
 
         #print(filtered_ride)
         #print('total distance ', total_distance, 'time')
@@ -58,9 +59,9 @@ print('-----------------------')
 
 
 data = data_strava.strava_csv()
-tot_km = (data[0])
-tot_dur = (data[1])
-print('allover rides:')
+tot_km = round(data[0])
+tot_dur = round(data[1])
+print('allover rides to job:')
 print('You ride total: ', tot_km , 'km')
 print('In duration: ', tot_dur, 'hours')
 CO2_calculator.one_km_weigth(tot_km)
